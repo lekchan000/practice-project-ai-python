@@ -10,7 +10,6 @@ app = Flask("Sentiment Analyzer")
 
 @app.route("/sentimentAnalyzer")
 def sent_analyzer():
-    """This functions executes the flask app and deploys it on localhost:5000"""
     # Retrieve the text to analyze from the request arguments
     text_to_analyze = request.args.get("textToAnalyze")
 
@@ -21,10 +20,14 @@ def sent_analyzer():
     label = response["label"]
     score = response["score"]
 
-    # Return a formatted string with the sentiment label and score
-    return "The given text has been identified as {} with a score of {}.".format(
-        label.split("_")[1], score
-    )
+    # Check if the label is None, indicating an error or invalid input
+    if label is None:
+        return "Invalid input! Try again."
+    else:
+        # Return a formatted string with the sentiment label and score
+        return "The given text has been identified as {} with a score of {}.".format(
+            label.split("_")[1], score
+        )
 
 
 @app.route("/")
